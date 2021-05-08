@@ -84,8 +84,8 @@ export class EC2Stack extends cdk.Stack {
       handler: 'index.main',
       code: lambda.Code.fromAsset(path.join(__dirname, '/../src/my-lambda')),
       environment: {
-        VPC_CIDR: vpc.vpcCidrBlock,
-        VPC_ID: vpc.vpcId,
+        VPC_CIDR: vpcLambda.vpcCidrBlock,
+        VPC_ID: vpcLambda.vpcId,
       },
     });
   }
