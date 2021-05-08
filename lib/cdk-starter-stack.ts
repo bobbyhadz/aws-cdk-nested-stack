@@ -69,18 +69,12 @@ export class EC2Stack extends cdk.Stack {
       'systemctl enable httpd',
       'echo "<h1>It works :)</h1>" > /var/www/html/index.html',
     );
-  }
-}
 
-export class LambdaStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
-
-    const {vpc} = new VpcNestedStack(this, 'nested-stack');
+    const {vpc: vpcLambda} = new VpcNestedStack(this, 'nested-stack-lambda');
 
     const lambdaFunction = new lambda.Function(this, 'lambda-function', {
       runtime: lambda.Runtime.NODEJS_14_X,
-      vpc,
+      vpc: vpcLambda,
       vpcSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },

@@ -13,21 +13,17 @@ A repository for an article on
 npm install
 ```
 
-3. Deploy the CDK stacks
+3. Deploy the CDK stack
 
 ```bash
-npx cdk deploy \
-  lambda-stack \
-  ec2-stack
+npx cdk deploy
 ```
 
-4. Open the AWS CloudFormation Console and the stacks should be created in your
+4. Open the AWS CloudFormation Console and the stack should be created in your
    default region
 
 5. Cleanup
 
 ```bash
-npx cdk destroy \
-  lambda-stack \
-  ec2-stack
+npx cdk destroy
 ```
