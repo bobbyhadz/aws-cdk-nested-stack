@@ -20,38 +20,13 @@ class VpcNestedStack extends cdk.NestedStack {
           subnetType: ec2.SubnetType.PUBLIC,
           cidrMask: 24,
         },
-        // // 👇 added isolated subnets
-        // {
-        //   name: 'isolated-subnet-1',
-        //   subnetType: ec2.SubnetType.ISOLATED,
-        //   cidrMask: 24,
-        // },
+        // 👇 added isolated subnets
+        {
+          name: 'isolated-subnet-1',
+          subnetType: ec2.SubnetType.ISOLATED,
+          cidrMask: 24,
+        },
       ],
-    });
-  }
-}
-
-export class LambdaStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
-
-    const {vpc} = new VpcNestedStack(this, 'nested-stack');
-
-    const lambdaFunction = new lambda.Function(this, 'lambda-function', {
-      runtime: lambda.Runtime.NODEJS_14_X,
-      vpc,
-      vpcSubnets: {
-        subnetType: ec2.SubnetType.PUBLIC,
-      },
-      allowPublicSubnet: true,
-      memorySize: 1024,
-      timeout: cdk.Duration.seconds(5),
-      handler: 'index.main',
-      code: lambda.Code.fromAsset(path.join(__dirname, '/../src/my-lambda')),
-      environment: {
-        VPC_CIDR: vpc.vpcCidrBlock,
-        VPC_ID: vpc.vpcId,
-      },
     });
   }
 }
@@ -94,5 +69,30 @@ export class EC2Stack extends cdk.Stack {
       'systemctl enable httpd',
       'echo "<h1>It works :)</h1>" > /var/www/html/index.html',
     );
+  }
+}
+
+export class LambdaStack extends cdk.Stack {
+  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    const {vpc} = new VpcNestedStack(this, 'nested-stack');
+
+    const lambdaFunction = new lambda.Function(this, 'lambda-function', {
+      runtime: lambda.Runtime.NODEJS_14_X,
+      vpc,
+      vpcSubnets: {
+        subnetType: ec2.SubnetType.PUBLIC,
+      },
+      allowPublicSubnet: true,
+      memorySize: 1024,
+      timeout: cdk.Duration.seconds(5),
+      handler: 'index.main',
+      code: lambda.Code.fromAsset(path.join(__dirname, '/../src/my-lambda')),
+      environment: {
+        VPC_CIDR: vpc.vpcCidrBlock,
+        VPC_ID: vpc.vpcId,
+      },
+    });
   }
 }
