@@ -4,6 +4,7 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from 'aws-cdk-lib';
 import * as path from 'path';
 import {Construct} from 'constructs';
+
 class VpcNestedStack extends cdk.NestedStack {
   public readonly vpc: ec2.Vpc;
 
@@ -23,7 +24,7 @@ class VpcNestedStack extends cdk.NestedStack {
         // 👇 added isolated subnets
         {
           name: 'isolated-subnet-1',
-          subnetType: ec2.SubnetType.ISOLATED,
+          subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
           cidrMask: 24,
         },
       ],
