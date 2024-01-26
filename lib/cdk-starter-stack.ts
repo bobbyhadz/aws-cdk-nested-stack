@@ -74,7 +74,7 @@ export class EC2Stack extends cdk.Stack {
     const {vpc: vpcLambda} = new VpcNestedStack(this, 'nested-stack-lambda');
 
     const lambdaFunction = new lambda.Function(this, 'lambda-function', {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       vpc: vpcLambda,
       vpcSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
